@@ -1,17 +1,31 @@
 package at.medunigraz.imi.bst;
 
+import java.io.IOException;
 import java.util.*;
 
 public final class TopLevelConcept {
 
-    public static List<PatternFrequency> getPatternFrequency(SUBHIERARCHY sh) {
-        List<PatternFrequency> patternFreq = new ArrayList<PatternFrequency>();
-        return patternFreq;
+    
+    public static List<PatternFrequency> getPatternFrequency(SUBHIERARCHY sh, int threshold) throws IOException {
+
+        List<PatternFrequency> allPatternFreq = PatternFrequency.fromFile();
+
+        List<PatternFrequency> thisPatternFreq = new ArrayList<PatternFrequency>();
+
+        for (PatternFrequency patternFreq: allPatternFreq) {
+            if (patternFreq.pattern.topLevelConcept.equals(sh) &&
+                    patternFreq.frequency >= threshold) {
+                thisPatternFreq.add(patternFreq);
+            }
+        }
+        return thisPatternFreq;
     }
 
     public enum SUBHIERARCHY {  BS, CF, EG, EV, OE, OR, PB, PF, PO,
                                 PR, QV, RA, SI, SO, SP, SN, ST, SU}
 
+
+    // Probably useless... here anyway for now
     public static final Map<SUBHIERARCHY, Integer> SUBHIERARCHY_MAPPINGS;
     static {
         Map<SUBHIERARCHY, Integer> theMap = new HashMap<SUBHIERARCHY, Integer>();

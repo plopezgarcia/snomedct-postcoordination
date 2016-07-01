@@ -6,9 +6,10 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class PatternFrequency {
+public class PatternFrequency implements Comparable<PatternFrequency>{
 
     public static final String PATTERNS_FILE = "src/main/resources/data/pattern-frequencies.csv";
 
@@ -41,6 +42,13 @@ public class PatternFrequency {
                 patternFrequencies.add(new PatternFrequency(conceptPattern, frequency));
         }
 
+        // File is already sorted, but make sure just in case implementation is changed
+        Collections.sort(patternFrequencies, Collections.<PatternFrequency>reverseOrder());
+
         return patternFrequencies;
+    }
+
+    public int compareTo(PatternFrequency other){
+        return Integer.compare(this.frequency, other.frequency);
     }
 }
