@@ -5,7 +5,12 @@ import java.util.*;
 
 public final class TopLevelConcept {
 
-    
+    public static ConceptPattern getMostFrequentPattern(SUBHIERARCHY sh) throws IOException {
+
+        return TopLevelConcept.getPatternFrequency(sh, 1).get(0).pattern;
+
+    }
+
     public static List<PatternFrequency> getPatternFrequency(SUBHIERARCHY sh, int threshold) throws IOException {
 
         List<PatternFrequency> allPatternFreq = PatternFrequency.fromFile();
