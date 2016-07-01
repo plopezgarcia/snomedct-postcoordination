@@ -1,10 +1,13 @@
 package at.medunigraz.imi.bst;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public final class Constants {
+public final class TopLevelConcept {
+
+    public static List<PatternFrequency> getPatternFrequency(SUBHIERARCHY sh) {
+        List<PatternFrequency> patternFreq = new ArrayList<PatternFrequency>();
+        return patternFreq;
+    }
 
     public enum SUBHIERARCHY {  BS, CF, EG, EV, OE, OR, PB, PF, PO,
                                 PR, QV, RA, SI, SO, SP, SN, ST, SU}
