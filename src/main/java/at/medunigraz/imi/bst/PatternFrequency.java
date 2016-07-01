@@ -3,15 +3,10 @@ package at.medunigraz.imi.bst;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PatternFrequency {
 
@@ -28,5 +23,24 @@ public class PatternFrequency {
     @Override
     public String toString() {
         return "Freq: " + frequency + " - ConceptPattern: " + pattern.toString();
+    }
+
+    public static List<PatternFrequency> fromFile() throws IOException {
+
+        List<PatternFrequency> patternFrequencies = new ArrayList<PatternFrequency>();
+
+        CSVReader reader = new CSVReader(new FileReader(PATTERNS_FILE), '\t');
+        String[] nextLine;
+        while ((nextLine = reader.readNext()) != null) {
+
+            int frequency = new Integer(nextLine[0]);
+
+            ConceptPattern conceptPattern = ConceptPattern.fromString(nextLine[1]);
+
+            if (!conceptPattern.patternRightHands.isEmpty())
+                patternFrequencies.add(new PatternFrequency(conceptPattern, frequency));
+        }
+
+        return patternFrequencies;
     }
 }

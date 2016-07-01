@@ -3,7 +3,6 @@ package at.medunigraz.imi.bst;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.regex.Matcher;
 
 public class PatternRightHand implements Comparable<PatternRightHand>{
 
