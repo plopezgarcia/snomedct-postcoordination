@@ -1,27 +1,35 @@
 package at.medunigraz.imi.bst;
 
+import au.com.bytecode.opencsv.CSVReader;
 import org.junit.Test;
 
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class GeneralTest {
 
     @Test
     public void minimalTest() throws Exception {
 
-        PatternRightHand prh1 = new PatternRightHand("finding-site", TopLevelConcept.SUBHIERARCHY.BS);
-        PatternRightHand prh2 = new PatternRightHand("recommended-procedure", TopLevelConcept.SUBHIERARCHY.PR);
-        PatternRightHand prh3 = new PatternRightHand("recommended-procedure", TopLevelConcept.SUBHIERARCHY.BS);
-        PatternRightHand prh4 = new PatternRightHand("finding-site", TopLevelConcept.SUBHIERARCHY.CF);
-        PatternRightHand prh5 = new PatternRightHand("finding-site", TopLevelConcept.SUBHIERARCHY.BS);
+        String PATTERNS_FILE = "src/main/resources/data/pattern-frequencies.csv";
 
-        Pattern pattern = new Pattern(  TopLevelConcept.SUBHIERARCHY.CF,
-                                        Arrays.asList(prh1, prh2, prh3, prh4, prh5));
+        List<PatternFrequency> patternFrequencies = new ArrayList<PatternFrequency>();
 
-        PatternFrequency patternFreq = new PatternFrequency(pattern, 1000);
+        CSVReader reader = new CSVReader(new FileReader(PATTERNS_FILE), '\t');
+        String [] nextLine;
+        while ((nextLine = reader.readNext()) != null) {
 
-        System.out.println(patternFreq);
+            int frequency = new Integer(nextLine[0]);
 
+            ConceptPattern conceptPattern = ConceptPattern.fromString(nextLine[1]);
+
+            if (!conceptPattern.patternRightHands.isEmpty())
+                patternFrequencies.add(new PatternFrequency(conceptPattern, frequency));
+        }
+
+        System.out.println(patternFrequencies);
     }
 
 }
