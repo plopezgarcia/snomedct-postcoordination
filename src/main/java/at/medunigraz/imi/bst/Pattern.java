@@ -17,7 +17,7 @@ public class Pattern {
 
     @Override
     public String toString() {
-        return topLevelConcept + " - " + patternRightHands;
+        return topLevelConcept + "->" + patternRightHands;
     }
 
 }

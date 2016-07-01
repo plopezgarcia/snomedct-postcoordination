@@ -10,4 +10,9 @@ public class PatternFrequency {
         this.pattern = pattern;
         this.frequency = frequency;
     }
+
+    @Override
+    public String toString() {
+        return "Freq: " + frequency + " - Pattern: " + pattern.toString();
+    }
 }
