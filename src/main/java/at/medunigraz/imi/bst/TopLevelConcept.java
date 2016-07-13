@@ -34,7 +34,7 @@ public final class TopLevelConcept {
     public static final Map<SUBHIERARCHY, Integer> SUBHIERARCHY_MAPPINGS;
     static {
         Map<SUBHIERARCHY, Integer> theMap = new HashMap<SUBHIERARCHY, Integer>();
-        theMap.put(SUBHIERARCHY.BS, 23037004);
+        theMap.put(SUBHIERARCHY.BS, 123037004);
         theMap.put(SUBHIERARCHY.CF, 404684003);
         theMap.put(SUBHIERARCHY.EG, 308916002);
         theMap.put(SUBHIERARCHY.EV, 272379006);

@@ -41,7 +41,8 @@ public class PatternFrequency implements Comparable<PatternFrequency>{
             if (!conceptPattern.patternRightHands.isEmpty())
                 patternFrequencies.add(new PatternFrequency(conceptPattern, frequency));
         }
-
+        reader.close();
+        
         // File is already sorted, but make sure just in case implementation is changed
         Collections.sort(patternFrequencies, Collections.<PatternFrequency>reverseOrder());
 
