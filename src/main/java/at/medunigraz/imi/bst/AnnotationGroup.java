@@ -73,19 +73,24 @@ public class AnnotationGroup {
 		List<PatternCombination> listMatchingPatterns = new ArrayList<PatternCombination>();
 		//Find all matching patterns with the combination of annotation codes and create the corresponding PatternCombinations
 		for(PatternFrequency pf: listPatterns){
+			List<TopLevelConcept.SUBHIERARCHY> listConcepts = new ArrayList<TopLevelConcept.SUBHIERARCHY>();
+			listConcepts.add(pf.pattern.topLevelConcept);
 			List<PatternRightHand> listHierarchyConcepts = pf.pattern.patternRightHands;
-			ArrayList<Integer> listMatchingCodes = new ArrayList<Integer>();
 			for(PatternRightHand prh: listHierarchyConcepts){
+				listConcepts.add(prh.range);
+			}
+			ArrayList<Integer> listMatchingCodes = new ArrayList<Integer>();
+			for(TopLevelConcept.SUBHIERARCHY prh: listConcepts){
 				for(int h=0;h<listCodes.size();h++){
 					if(listMatchingCodes.contains(h)) continue;
 					AnnotationCode ac = listCodes.get(h);
-					if(prh.range.equals(ac.getHierarchy())){
+					if(prh.equals(ac.getHierarchy())){
 						listMatchingCodes.add(h);
 					}
 				}
 			}
 			if(listMatchingCodes.size()==listCodes.size()){
-				PatternCombination pc = new PatternCombination(pf, listCodes, listHierarchyConcepts.size()==listCodes.size());
+				PatternCombination pc = new PatternCombination(pf, listCodes, listConcepts.size()==listCodes.size());
 				listMatchingPatterns.add(pc);
 			}
 		}
