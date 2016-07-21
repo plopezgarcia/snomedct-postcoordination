@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main_MatchingPostcoordinationPatterns {
 	public static final String MATCHING_PATTERNS_FILE = "src/main/resources/data/matchingPatterns.txt";
@@ -26,7 +27,7 @@ public class Main_MatchingPostcoordinationPatterns {
 				}
 			}
 			bw.close();
-			System.out.println("Hola");
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
