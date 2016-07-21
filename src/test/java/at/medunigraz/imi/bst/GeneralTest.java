@@ -12,6 +12,8 @@ public class GeneralTest {
         // Gets all patterns for CF subhierarchy, in descending order, with at least 6000 concepts
         // Retains frequency information
 
+    	ExtendedPatternFrequency.fromFile();
+    	
         List<PatternFrequency> aListOfFreqs = TopLevelConcept.getPatternFrequency(TopLevelConcept.SUBHIERARCHY.CF, 6000);
         System.out.println(aListOfFreqs);
 

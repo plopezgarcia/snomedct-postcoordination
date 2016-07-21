@@ -51,6 +51,9 @@ public class ConceptPattern {
         return new ConceptPattern(currentTopLevelSH, prhs);
     }
 
+    
+    
+    
     @Override
     public String toString() {
         return topLevelConcept + "->" + patternRightHands;
