@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 public class RelationshipConcept {
 	
-	
 	public List<PatternRightHand> relationshipRange;
 	
 	public String relationshipConcept;

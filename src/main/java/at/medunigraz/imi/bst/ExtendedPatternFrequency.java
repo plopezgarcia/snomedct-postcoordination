@@ -52,7 +52,7 @@ public class ExtendedPatternFrequency {
 		}
 		return extendPatternFreq;
 	}
-
+	
 	public  Map<String,List<String>> extendPattern(List<PatternRightHand> pattern, Map<String, RelationshipConcept> relationshipsRange){
 		String IS_A = "116680003";
 		Map<String,List<String>> extendedPatterns = new HashMap<String,List<String>>();
