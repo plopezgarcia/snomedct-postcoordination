@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class represents a postcoordination pattern
+ * 
+ * @version 1.1 
+ * 
+ * */
 public class ConceptPattern {
 
     public TopLevelConcept.SUBHIERARCHY topLevelConcept;
@@ -23,26 +29,23 @@ public class ConceptPattern {
 
         String IS_A = "116680003";
 
-        String rightHandPattern = "(\\d+)-(..)";
+        String rightHandPattern = "(\\d+)-([a-zA-Z]+)";
 
         Pattern r = Pattern.compile(rightHandPattern);
-
+        
         Matcher m = r.matcher(fullString);
-
-        List<ConceptPattern> pattern = new ArrayList<ConceptPattern>();
 
         List<PatternRightHand> prhs = new ArrayList<PatternRightHand>();
 
         // FIXME: 01/07/16
         TopLevelConcept.SUBHIERARCHY currentTopLevelSH = null;
-
         while (m.find()) {
             String relationship = m.group(1);
             TopLevelConcept.SUBHIERARCHY range = TopLevelConcept.SUBHIERARCHY.valueOf(m.group(2));
 
             //IS-A triple should not be added, but determines which SH we are talking about
             if (relationship.equals(IS_A)) {
-                currentTopLevelSH = range;
+            	currentTopLevelSH = range;
             } else {
                 prhs.add(new PatternRightHand(relationship, range));
             }
@@ -51,7 +54,25 @@ public class ConceptPattern {
         return new ConceptPattern(currentTopLevelSH, prhs);
     }
 
-    
+    @Override
+    public boolean equals(Object o){
+    	if (!(o instanceof ConceptPattern))
+            return false;
+        if (o == this)
+            return true;
+    	
+    	ConceptPattern cp = (ConceptPattern)o;
+    	if(topLevelConcept.equals(cp.topLevelConcept)){
+    		if(patternRightHands.size() == cp.patternRightHands.size()){
+    			for(PatternRightHand prh: patternRightHands){
+    				if(!cp.patternRightHands.contains(prh)) return false;
+    			}
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
     
     
     @Override

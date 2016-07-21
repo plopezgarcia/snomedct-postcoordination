@@ -3,6 +3,11 @@ package at.medunigraz.imi.bst;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class provides the set of top level concepts from SNOMED CT that we used to match codes within the patterns.
+ * 
+ * @version 1.1
+ * */
 public final class TopLevelConcept {
 
     public static ConceptPattern getMostFrequentPattern(SUBHIERARCHY sh) throws IOException {
@@ -30,10 +35,8 @@ public final class TopLevelConcept {
     							PR, QV, RA, SI, SO, SP, SN, ST, SU, SM, AABS, MA, SV, CC, ES, LP, EP, FV, AI, IP, HP, POL, POM, SOR,
     							AT,DV, SAV, PRO, INT,PS,FM,CM,DN,GR,PROP,RV,POMP,ROA,PA,
     							CS,TF,PMS,QT,QL,OV,OVQT,NV,NTV,TV,LPM,PRV,UNT,TQ,
-    							LA,FCV,CVA,TCV,SD,TOD, POA, ENV}
+    							LA,FCV,CVA,TCV,SD,TOD, POA, ENV, SMC}
 
-
-    // Probably useless... here anyway for now
     public static final Map<String,SUBHIERARCHY> SUBHIERARCHY_MAPPINGS;
     static {
     	Map<String, SUBHIERARCHY> theMap = new HashMap<String,SUBHIERARCHY>();
@@ -55,7 +58,8 @@ public final class TopLevelConcept {
     	theMap.put("123038009", SUBHIERARCHY.SN); //Specimen
     	theMap.put("254291000", SUBHIERARCHY.ST); //Staging and scales 
     	theMap.put("105590001",SUBHIERARCHY.SU); //Substance
-    	theMap.put("138875005",SUBHIERARCHY.SM); //SNOMED CT Model Component 
+    	theMap.put("138875005",SUBHIERARCHY.SM); //SNOMED CT Concept
+    	theMap.put("900000000000441003", SUBHIERARCHY.SMC);//SNOMED CT Model Concept
     	theMap.put("442083009", SUBHIERARCHY.AABS); //Anatomical or acquired body structure 
     	theMap.put("49755003",SUBHIERARCHY.MA); //Morphologically abnormal structure
     	theMap.put("272141005",SUBHIERARCHY.SV); //Severities

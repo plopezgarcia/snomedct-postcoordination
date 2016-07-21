@@ -9,3 +9,5 @@
 target
 *.jar
 *.swp
+/.classpath
+/.project

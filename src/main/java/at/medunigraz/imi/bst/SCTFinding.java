@@ -8,10 +8,14 @@ import java.util.List;
 
 import at.medunigraz.imi.bst.TopLevelConcept.SUBHIERARCHY;
 
+/**
+ * This class parses the file which contains the list of annotation groups of the reference standard.
+ * 
+ * @version 1.0
+ * */
 public class SCTFinding {
-	public static final String TERMINOLOGY_FILE = "src/main/resources/data/SNOMED_ID_Ancestor.txt";
+	public static final String TERMINOLOGY_FILE = "src/main/resources/data/SNOMED_ID_Ancestor2.txt";
 	private static SCTFinding singleton;
-	//private HashMap<String, String> map;
 	private HashMap<String, List<String>> map;
 	
 	public static SCTFinding getInstance(){
@@ -21,33 +25,6 @@ public class SCTFinding {
 		return singleton;
 	}
 	
-	/*
-	public SCTFinding(){
-		map = new HashMap<String, String>();
-		try{
-			BufferedReader br = new BufferedReader(new FileReader(TERMINOLOGY_FILE));
-			String line = "";
-			while((line = br.readLine()) != null){
-				String[] tokens = line.split("\t");
-				map.put(tokens[0], tokens[1]);
-			}
-			br.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public SUBHIERARCHY getAncestor(String sctid){
-		String parent = map.get(sctid);
-		for(SUBHIERARCHY value: TopLevelConcept.SUBHIERARCHY_MAPPINGS.keySet()){
-			if(TopLevelConcept.SUBHIERARCHY_MAPPINGS.get(value).equals(parent)){
-				return value;
-			}
-		}
-		return null;
-	}
-	*/	
-	 
 	public SCTFinding(){
 		map = new HashMap<String, List<String>>();
 		try{
@@ -71,11 +48,7 @@ public class SCTFinding {
 		ArrayList<SUBHIERARCHY>	values = new ArrayList<SUBHIERARCHY>();
 		List<String> listParents = map.get(sctid);
 		for(String parent: listParents){
-			for(SUBHIERARCHY value: TopLevelConcept.SUBHIERARCHY_MAPPINGS.keySet()){
-				if(TopLevelConcept.SUBHIERARCHY_MAPPINGS.get(value).equals(parent)){
-					values.add(value);
-				}
-			}
+			values.add(TopLevelConcept.SUBHIERARCHY_MAPPINGS.get(parent));
 		}
 		return values;
 	}

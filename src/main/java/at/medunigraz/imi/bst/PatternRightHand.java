@@ -3,7 +3,11 @@ package at.medunigraz.imi.bst;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-
+/**
+ * This class represent an element of the right side of a pattern.
+ * 
+ * @version 1.1
+ * */
 public class PatternRightHand implements Comparable<PatternRightHand>{
 
 

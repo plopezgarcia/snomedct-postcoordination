@@ -11,6 +11,7 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * This class parses the list of annotations from the reference standard and obtains a list of set of codes
  * 
+ * @version 1.0
  * */
 public class ParseAnnotationFile {
 	public static final String ANNOTATIONS_FILE = "src/main/resources/data/referenceStandard.csv";

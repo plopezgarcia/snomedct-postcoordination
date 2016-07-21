@@ -3,13 +3,12 @@ package at.medunigraz.imi.bst;
 import java.util.List;
 
 /**
- * This class represents a code in an annotation group and provides information about the hierarchy of SNOMED CT the code belongs to.
+ * This class represents a code in an annotation group and provides information about its ancestors is SNOMED CT.
  * 
- * @version 1.0
+ * @version 1.1
  * */
 public class AnnotationCode {
 	private String code;
-	//private TopLevelConcept.SUBHIERARCHY hierarchy; /*CF, BS, SU, OR, PR, PO, QV, OE, SO, EV, PB, EG, SI, SN, SP, RA, ...*/
 	private List<TopLevelConcept.SUBHIERARCHY> listParents;
 	
 	
@@ -18,20 +17,6 @@ public class AnnotationCode {
 		findHierarchyRoot();
 	}
 	
-	/*
-	private void findHierarchyRoot(){
-		hierarchy = SCTFinding.getInstance().getAncestor(code);
-	}
-		
-	public TopLevelConcept.SUBHIERARCHY getHierarchy(){
-		return hierarchy;
-	}
-	
-	public String toString(){
-		return code+"("+hierarchy+")";
-	}
-	*/
-
 	public String getCode(){
 		return code;
 	}
@@ -49,8 +34,19 @@ public class AnnotationCode {
 		return listParents;
 	}
 	
-	public void findHierarchyRoot(){
+	private void findHierarchyRoot(){
 		listParents = SCTFinding.getInstance().getAncestors(code);
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(!(o instanceof AnnotationCode))
+			return false;
+		if(this == o)
+			return true;
+		
+		AnnotationCode ac = (AnnotationCode)o;
+		
+		return this.code.equals(ac.getCode());
+	}
 }

@@ -1,16 +1,19 @@
 package at.medunigraz.imi.bst;
 
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.PatternSyntaxException;
 
-import at.medunigraz.imi.bst.RelationshipConcept.RELATIONSHIP;
 import au.com.bytecode.opencsv.CSVReader;
+
+/**
+ * This class produces the extended version of the postcoordination patterns that take into account the SNOMED CT concept model
+ * 
+ * @version 1.0
+ * */
 
 public class ExtendedPatternFrequency {
 	
@@ -24,10 +27,16 @@ public class ExtendedPatternFrequency {
 		String[] nextLine;
         while ((nextLine = reader.readNext()) != null) {
         	String relationship = nextLine[0];
-        	if(!RelationshipConcept.RELATIONSHIP_MAPPINGS.containsKey(relationship)) throw new Exception();
+        	if(!RelationshipConcept.RELATIONSHIP_MAPPINGS.containsKey(relationship)){
+        		reader.close();
+        		throw new Exception();
+        	}
         	String [] rangesPerRelationship = RelationshipConcept.fromString(nextLine[1]);      	
         	for (String string : rangesPerRelationship) {
-        		if(!TopLevelConcept.SUBHIERARCHY_MAPPINGS.containsKey(string))throw new Exception();
+        		if(!TopLevelConcept.SUBHIERARCHY_MAPPINGS.containsKey(string)){
+        			reader.close();
+        			throw new Exception();
+        		}
         	}
         	RelationshipConcept relationshipConcept = new RelationshipConcept(relationship,Arrays.asList(rangesPerRelationship)); 
         	relationshipsRange.put(relationship,relationshipConcept);

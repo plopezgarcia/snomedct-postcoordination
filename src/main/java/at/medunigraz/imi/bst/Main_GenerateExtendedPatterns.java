@@ -2,10 +2,15 @@ package at.medunigraz.imi.bst;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * This is the main class that was used to produce the list of extended version of the postcoordination patterns.
+ * 
+ * @version 1.0
+ * */
 public class Main_GenerateExtendedPatterns {
 	
 	public static final String EXTENDED_PATTERNS_FILE = "src/main/resources/data/pattern-extended-frequencies.csv";
@@ -16,7 +21,7 @@ public class Main_GenerateExtendedPatterns {
 			Map<String, RelationshipConcept> relationshipsRange = ExtendedPatternFrequency.fromFile();
 			ExtendedPatternFrequency extendPatternFrequency = new ExtendedPatternFrequency();
 			List<PatternFrequency> allExtendedPatternFreq =extendPatternFrequency.extendPatterns(allPatternFreq,relationshipsRange);
-			//System.out.println(allPatternFreq.size()+" "+relationshipsRange.size()+" "+allExtendedPatternFreq.size());
+			
 			String IS_A = "116680003";
 			BufferedWriter bw = new BufferedWriter(new FileWriter(EXTENDED_PATTERNS_FILE));
 			for (PatternFrequency patternFrequency : allExtendedPatternFreq) {
@@ -30,7 +35,6 @@ public class Main_GenerateExtendedPatterns {
 			bw.close();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

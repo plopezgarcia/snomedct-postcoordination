@@ -7,7 +7,8 @@ import java.util.Map;
 
 
 /**
- * This class represents the set of codes used in the annotation of a medical text with SNOMED CT. 
+ * This class represents the set of codes used in the annotation of a medical text with SNOMED CT.
+ * It is able to find which patterns match the set of annotation codes.
  * 
  * @version 1.1
  * */
@@ -49,10 +50,12 @@ public class AnnotationGroup {
 	
 	
 	private void recursiveCombination(List<PatternCombination> listSelectedPatterns, List<PatternFrequency> listPatterns, Integer[] indexes, int current){
-		if(current >= indexes.length){
+		if(current >= indexes.length){			
 			List<AnnotationCode> listCodes = getCombinationCodes(indexes);
 			List<PatternCombination> listMatchedPatterns = findMatchingPatterns(listPatterns, listCodes);
-			listSelectedPatterns.addAll(listMatchedPatterns);//Probably we should avoid adding a patterns which is already in the list but with a larger set of codes than the new matching pattern.
+			for(PatternCombination pc: listMatchedPatterns){
+				if(!listSelectedPatterns.contains(pc)) listSelectedPatterns.add(pc);
+			}
 			return;
 		}
 		
@@ -64,58 +67,28 @@ public class AnnotationGroup {
 	
 	private List<AnnotationCode> getCombinationCodes(Integer[] indexes){
 		List<AnnotationCode> listCodes = new ArrayList<AnnotationCode>();
-		
 		for(int i=0;i<indexes.length;i++){
 			listCodes.add(annotationGroup.get(indexes[i]));
 		}
 		
 		return listCodes;
 	}
-	/*
-	public List<PatternCombination> findMatchingPatterns(List<PatternFrequency> listPatterns, List<AnnotationCode> listCodes){
+	
+	private List<PatternCombination> findMatchingPatterns(List<PatternFrequency> listPatterns, List<AnnotationCode> listCodes){
 		List<PatternCombination> listMatchingPatterns = new ArrayList<PatternCombination>();
 		//Find all matching patterns with the combination of annotation codes and create the corresponding PatternCombinations
 		for(PatternFrequency pf: listPatterns){
-			List<TopLevelConcept.SUBHIERARCHY> listConcepts = new ArrayList<TopLevelConcept.SUBHIERARCHY>();
-			listConcepts.add(pf.pattern.topLevelConcept);
-			List<PatternRightHand> listHierarchyConcepts = pf.pattern.patternRightHands;
-			for(PatternRightHand prh: listHierarchyConcepts){
-				listConcepts.add(prh.range);
-			}
-			ArrayList<Integer> listMatchingCodes = new ArrayList<Integer>();
-			for(TopLevelConcept.SUBHIERARCHY prh: listConcepts){
-				for(int h=0;h<listCodes.size();h++){
-					if(listMatchingCodes.contains(h)) continue;
-					AnnotationCode ac = listCodes.get(h);
-					if(prh.equals(ac.getHierarchy())){
-						listMatchingCodes.add(h);
-					}
-				}
-			}
-			if(listMatchingCodes.size()==listCodes.size()){
-				PatternCombination pc = new PatternCombination(pf, listCodes, listConcepts.size()==listCodes.size());
-				listMatchingPatterns.add(pc);
-			}
-		}
-		
-		return listMatchingPatterns;
-	}*/
-	
-	
-	//OPCION 1: PatternFrequency tiene solo un posible concepto como rango para cada relación
-	public List<PatternCombination> findMatchingPatterns(List<PatternFrequency> listPatterns, List<AnnotationCode> listCodes){
-		List<PatternCombination> listMatchingPatterns = new ArrayList<PatternCombination>();
-		//Find all matching patterns with the combination of annotation codes and create the corresponding PatternCombinations
-		for(PatternFrequency pf: listPatterns){
+			if(pf.pattern.patternRightHands.size()+1 < listCodes.size()) continue;
 			List<PatternCombination> listBestMatching = getBestMatching(pf, listCodes);
-			listMatchingPatterns.addAll(listBestMatching);
+			for(PatternCombination pc: listBestMatching){
+				if(!listMatchingPatterns.contains(pc))	listMatchingPatterns.add(pc);
+			}
 		}
 		
 		return listMatchingPatterns;
 	}
 	
-	
-	public List<PatternCombination> getBestMatching(PatternFrequency pf, List<AnnotationCode> listCodes){
+	private List<PatternCombination> getBestMatching(PatternFrequency pf, List<AnnotationCode> listCodes){
 		List<PatternCombination> results = new ArrayList<PatternCombination>();
 		PatternRightHand prhTop = new PatternRightHand("Top", pf.pattern.topLevelConcept);
 		for(int i=0;i<listCodes.size();i++){
@@ -124,7 +97,9 @@ public class AnnotationGroup {
 				Map<PatternRightHand,AnnotationCode> matchingMap = new HashMap<PatternRightHand,AnnotationCode>();
 				matchingMap.put(prhTop, ac);
 				List<PatternCombination> listBestMatchingPatterns = getBestPatternMatching(recursiveMatchingConcepts(matchingMap, pf, listCodes, 1), pf, listCodes);
-				results.addAll(listBestMatchingPatterns);
+				for(PatternCombination pc: listBestMatchingPatterns){
+					if(!results.contains(pc))	results.add(pc);
+				}
 			}
 		}
 				
@@ -150,8 +125,11 @@ public class AnnotationGroup {
 					}
 				}
 				map.remove(topKey);
-				PatternCombination pc = new PatternCombination(pf, listCodes, map.size() == listCodes.size(), topCode, map);
-				results.add(pc);
+				
+				PatternCombination pc = new PatternCombination(pf, this, topCode, map);
+				if(!results.contains(pc)){
+					results.add(pc);
+				}
 			}
 		}
 		

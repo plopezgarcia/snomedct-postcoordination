@@ -9,9 +9,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class represents the frequency of the pattern in the precoordinated expressions of SNOMED CT.
+ * 
+ * @version 1.1
+ * 
+ * */
+
 public class PatternFrequency implements Comparable<PatternFrequency>{
 
-    public static final String PATTERNS_FILE = "src/main/resources/data/pattern-frequencies.csv";
+    public static final String PATTERNS_FILE = "src/main/resources/data/pattern-extended-frequencies.csv";
 
     public ConceptPattern pattern;
     public int frequency;
@@ -52,4 +59,21 @@ public class PatternFrequency implements Comparable<PatternFrequency>{
     public int compareTo(PatternFrequency other){
         return Integer.compare(this.frequency, other.frequency);
     }
+    
+    @Override
+    public boolean equals(Object o){
+    	if (!(o instanceof PatternFrequency))
+            return false;
+        if (o == this)
+            return true;
+        
+        PatternFrequency pf = (PatternFrequency) o;
+        
+    	if(this.frequency==pf.frequency){
+    		return pattern.equals(pf.pattern);
+    	}
+    	
+    	return false;
+    }
+    
 }
