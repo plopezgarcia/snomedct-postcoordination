@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Main_MatchingPostcoordinationPatterns {
-	public static final String MATCHING_PATTERNS_FILE = "src/main/resources/data/matchingPatterns.txt";
+	public static final String MATCHING_PATTERNS_FILE = "src/main/resources/data/matchingPatterns2.txt";
 	
 	public static void main(String[] args) {
 		
@@ -26,10 +26,8 @@ public class Main_MatchingPostcoordinationPatterns {
 				}
 			}
 			bw.close();
-			System.out.println("Hola");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-
 }

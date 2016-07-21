@@ -1,12 +1,15 @@
 package at.medunigraz.imi.bst;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * This class represents the set of codes used in the annotation of a medical text with SNOMED CT. 
  * 
- * @version 1.0
+ * @version 1.1
  * */
 public class AnnotationGroup {
 	private List<AnnotationCode> annotationGroup;
@@ -68,7 +71,7 @@ public class AnnotationGroup {
 		
 		return listCodes;
 	}
-	
+	/*
 	public List<PatternCombination> findMatchingPatterns(List<PatternFrequency> listPatterns, List<AnnotationCode> listCodes){
 		List<PatternCombination> listMatchingPatterns = new ArrayList<PatternCombination>();
 		//Find all matching patterns with the combination of annotation codes and create the corresponding PatternCombinations
@@ -96,5 +99,98 @@ public class AnnotationGroup {
 		}
 		
 		return listMatchingPatterns;
+	}*/
+	
+	
+	//OPCION 1: PatternFrequency tiene solo un posible concepto como rango para cada relación
+	public List<PatternCombination> findMatchingPatterns(List<PatternFrequency> listPatterns, List<AnnotationCode> listCodes){
+		List<PatternCombination> listMatchingPatterns = new ArrayList<PatternCombination>();
+		//Find all matching patterns with the combination of annotation codes and create the corresponding PatternCombinations
+		for(PatternFrequency pf: listPatterns){
+			List<PatternCombination> listBestMatching = getBestMatching(pf, listCodes);
+			listMatchingPatterns.addAll(listBestMatching);
+		}
+		
+		return listMatchingPatterns;
+	}
+	
+	
+	public List<PatternCombination> getBestMatching(PatternFrequency pf, List<AnnotationCode> listCodes){
+		List<PatternCombination> results = new ArrayList<PatternCombination>();
+		PatternRightHand prhTop = new PatternRightHand("Top", pf.pattern.topLevelConcept);
+		for(int i=0;i<listCodes.size();i++){
+			AnnotationCode ac  = listCodes.get(i);
+			if(ac.getParents().contains(pf.pattern.topLevelConcept)){
+				Map<PatternRightHand,AnnotationCode> matchingMap = new HashMap<PatternRightHand,AnnotationCode>();
+				matchingMap.put(prhTop, ac);
+				List<PatternCombination> listBestMatchingPatterns = getBestPatternMatching(recursiveMatchingConcepts(matchingMap, pf, listCodes, 1), pf, listCodes);
+				results.addAll(listBestMatchingPatterns);
+			}
+		}
+				
+		return results;
+	}
+	
+	private List<PatternCombination> getBestPatternMatching(List<Map<PatternRightHand,AnnotationCode>> listMatchingPatterns, PatternFrequency pf, List<AnnotationCode> listCodes){
+		List<PatternCombination> results = new ArrayList<PatternCombination>();
+		int maxSize = 0;
+		for(Map<PatternRightHand, AnnotationCode> map: listMatchingPatterns){
+			if(map.size()> maxSize) maxSize = map.size();
+		}
+		
+		for(Map<PatternRightHand, AnnotationCode> map: listMatchingPatterns){
+			if(map.size()== maxSize){
+				AnnotationCode topCode = null;
+				PatternRightHand topKey = null;
+				for(PatternRightHand prh: map.keySet()){
+					if(prh.relationship.equals("Top")){
+						topKey = prh;
+						topCode = map.get(prh);
+						break;
+					}
+				}
+				map.remove(topKey);
+				PatternCombination pc = new PatternCombination(pf, listCodes, map.size() == listCodes.size(), topCode, map);
+				results.add(pc);
+			}
+		}
+		
+		return results;
+	}
+	
+	private List<Map<PatternRightHand,AnnotationCode>> recursiveMatchingConcepts(Map<PatternRightHand,AnnotationCode> matchingMap, PatternFrequency pf, List<AnnotationCode> listCodes, int depth){
+		
+		if((depth == listCodes.size()) || (depth == (pf.pattern.patternRightHands.size()+1))){
+			List<Map<PatternRightHand, AnnotationCode>> results = new ArrayList<Map<PatternRightHand, AnnotationCode>>();
+			if(matchingMap.size()>1){
+				Map<PatternRightHand, AnnotationCode> res = new HashMap<PatternRightHand, AnnotationCode>();
+				for(PatternRightHand prh: matchingMap.keySet()){
+					res.put(prh, matchingMap.get(prh));
+				}				
+				results.add(res);
+			}
+			return results;
+		}
+		
+		List<Map<PatternRightHand,AnnotationCode>> results = new ArrayList<Map<PatternRightHand,AnnotationCode>>();
+		for(int i=0;i<listCodes.size();i++){
+			boolean cont = false;
+			for(PatternRightHand prh: matchingMap.keySet()){
+				if(listCodes.get(i).equals(matchingMap.get(prh))){
+					cont = true;
+					break;
+				}
+			}
+			if(cont) continue;
+			for(int j=0;j<pf.pattern.patternRightHands.size();j++){
+				if(matchingMap.keySet().contains(pf.pattern.patternRightHands.get(j))) continue;
+				if(listCodes.get(i).getParents().contains(pf.pattern.patternRightHands.get(j).range)){
+					matchingMap.put(pf.pattern.patternRightHands.get(j), listCodes.get(i));
+					results.addAll(recursiveMatchingConcepts(matchingMap, pf, listCodes, depth+1));
+					matchingMap.remove(pf.pattern.patternRightHands.get(j));
+				}
+			}
+		}
+		return results;
 	}
 }
