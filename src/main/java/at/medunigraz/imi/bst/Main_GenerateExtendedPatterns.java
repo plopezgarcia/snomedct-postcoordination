@@ -2,6 +2,7 @@ package at.medunigraz.imi.bst;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,20 @@ public class Main_GenerateExtendedPatterns {
 			ExtendedPatternFrequency extendPatternFrequency = new ExtendedPatternFrequency();
 			List<PatternFrequency> allExtendedPatternFreq =extendPatternFrequency.extendPatterns(allPatternFreq,relationshipsRange);
 			
+			
+			List<PatternFrequency> resultExtendedPatternFreq = new ArrayList<PatternFrequency>();
+			for (PatternFrequency pf : allExtendedPatternFreq) {
+				PatternFrequency npf = getPattern(pf,resultExtendedPatternFreq);
+				if(npf!=null && npf!=pf){ resultExtendedPatternFreq.remove(npf);
+				resultExtendedPatternFreq.add(pf);
+				}
+				if(npf==null) resultExtendedPatternFreq.add(pf);
+			}
+			
+			
 			String IS_A = "116680003";
 			BufferedWriter bw = new BufferedWriter(new FileWriter(EXTENDED_PATTERNS_FILE));
-			for (PatternFrequency patternFrequency : allExtendedPatternFreq) {
+			for (PatternFrequency patternFrequency : resultExtendedPatternFreq) {
 				List<PatternRightHand> patterns= patternFrequency.pattern.patternRightHands;
 				bw.write(patternFrequency.frequency+"\t"+"["+IS_A+"-"+patternFrequency.pattern.topLevelConcept);
 				for (PatternRightHand patternRightHand : patterns) {
@@ -38,6 +50,16 @@ public class Main_GenerateExtendedPatterns {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static PatternFrequency getPattern(PatternFrequency pf, List<PatternFrequency> resultExtendedPatternFreq){
+		for (PatternFrequency npf : resultExtendedPatternFreq) {
+			if(pf.pattern.equals(npf.pattern)){
+				if(npf.frequency<pf.frequency) return npf;
+				else return pf;
+			}
+		}
+		return null;
 	}
 
 }
