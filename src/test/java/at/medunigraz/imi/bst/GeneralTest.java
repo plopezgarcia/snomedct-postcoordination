@@ -14,7 +14,7 @@ public class GeneralTest {
 
     	ExtendedPatternFrequency.fromFile();
     	
-        List<PatternFrequency> aListOfFreqs = TopLevelConcept.getPatternFrequency(TopLevelConcept.SUBHIERARCHY.CF, 6000);
+        List<PatternFrequency> aListOfFreqs = ConceptModelConcepts.getPatternFrequency(ConceptModelConcepts.SUBHIERARCHY.CF, 6000);
         System.out.println(aListOfFreqs);
 
         System.out.println("The most frequent pattern for Clinical Finding is: " + aListOfFreqs.get(0).pattern);
@@ -22,7 +22,7 @@ public class GeneralTest {
 
         // Easier version: gets only the most frequent pattern
 
-        ConceptPattern cp = TopLevelConcept.getMostFrequentPattern(TopLevelConcept.SUBHIERARCHY.CF);
+        ConceptPattern cp = ConceptModelConcepts.getMostFrequentPattern(ConceptModelConcepts.SUBHIERARCHY.CF);
 
         System.out.println("The most frequent pattern for Clinical Finding is: " + cp);
     }

@@ -13,10 +13,10 @@ public class PatternRightHand implements Comparable<PatternRightHand>{
 
     public String relationship;
 
-    public TopLevelConcept.SUBHIERARCHY range;
+    public ConceptModelConcepts.SUBHIERARCHY range;
 
 
-    public PatternRightHand(String relationship, TopLevelConcept.SUBHIERARCHY range) {
+    public PatternRightHand(String relationship, ConceptModelConcepts.SUBHIERARCHY range) {
         this.relationship = relationship;
         this.range = range;
     }
