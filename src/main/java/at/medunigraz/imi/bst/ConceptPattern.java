@@ -15,11 +15,11 @@ import java.util.regex.Pattern;
  * */
 public class ConceptPattern {
 
-    public TopLevelConcept.SUBHIERARCHY topLevelConcept;
+    public ConceptModelConcepts.SUBHIERARCHY topLevelConcept;
 
     public List<PatternRightHand> patternRightHands;
 
-    public ConceptPattern(TopLevelConcept.SUBHIERARCHY topLevelConcept, List<PatternRightHand> patternRightHands) {
+    public ConceptPattern(ConceptModelConcepts.SUBHIERARCHY topLevelConcept, List<PatternRightHand> patternRightHands) {
         this.topLevelConcept = topLevelConcept;
         Collections.sort(patternRightHands);
         this.patternRightHands = patternRightHands;
@@ -38,10 +38,10 @@ public class ConceptPattern {
         List<PatternRightHand> prhs = new ArrayList<PatternRightHand>();
 
         // FIXME: 01/07/16
-        TopLevelConcept.SUBHIERARCHY currentTopLevelSH = null;
+        ConceptModelConcepts.SUBHIERARCHY currentTopLevelSH = null;
         while (m.find()) {
             String relationship = m.group(1);
-            TopLevelConcept.SUBHIERARCHY range = TopLevelConcept.SUBHIERARCHY.valueOf(m.group(2));
+            ConceptModelConcepts.SUBHIERARCHY range = ConceptModelConcepts.SUBHIERARCHY.valueOf(m.group(2));
 
             //IS-A triple should not be added, but determines which SH we are talking about
             if (relationship.equals(IS_A)) {

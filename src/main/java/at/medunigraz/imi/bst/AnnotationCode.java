@@ -9,7 +9,7 @@ import java.util.List;
  * */
 public class AnnotationCode {
 	private String code;
-	private List<TopLevelConcept.SUBHIERARCHY> listParents;
+	private List<ConceptModelConcepts.SUBHIERARCHY> listParents;
 	
 	
 	public AnnotationCode (String code){
@@ -23,14 +23,14 @@ public class AnnotationCode {
 	
 	public String toString(){
 		String parentsCode = "";
-		for(TopLevelConcept.SUBHIERARCHY hierarchy: listParents){
+		for(ConceptModelConcepts.SUBHIERARCHY hierarchy: listParents){
 			if(!parentsCode.isEmpty()) parentsCode+=",";
 			parentsCode+=hierarchy+"";
 		}
 		return code+"("+parentsCode+")";
 	}
 		
-	public List<TopLevelConcept.SUBHIERARCHY> getParents(){
+	public List<ConceptModelConcepts.SUBHIERARCHY> getParents(){
 		return listParents;
 	}
 	

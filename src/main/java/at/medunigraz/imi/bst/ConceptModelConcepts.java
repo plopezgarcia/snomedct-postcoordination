@@ -8,11 +8,11 @@ import java.util.*;
  * 
  * @version 1.1
  * */
-public final class TopLevelConcept {
+public final class ConceptModelConcepts {
 
     public static ConceptPattern getMostFrequentPattern(SUBHIERARCHY sh) throws IOException {
 
-        return TopLevelConcept.getPatternFrequency(sh, 1).get(0).pattern;
+        return ConceptModelConcepts.getPatternFrequency(sh, 1).get(0).pattern;
 
     }
 

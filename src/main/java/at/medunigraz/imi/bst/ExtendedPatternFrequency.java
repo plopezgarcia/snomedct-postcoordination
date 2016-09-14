@@ -33,7 +33,7 @@ public class ExtendedPatternFrequency {
         	}
         	String [] rangesPerRelationship = RelationshipConcept.fromString(nextLine[1]);      	
         	for (String string : rangesPerRelationship) {
-        		if(!TopLevelConcept.SUBHIERARCHY_MAPPINGS.containsKey(string)){
+        		if(!ConceptModelConcepts.SUBHIERARCHY_MAPPINGS.containsKey(string)){
         			reader.close();
         			throw new Exception();
         		}
@@ -92,7 +92,7 @@ public class ExtendedPatternFrequency {
 	        List<PatternRightHand> listPRH = new ArrayList<PatternRightHand>();
 	        for(int i=0;i<pattern.length;i++){
 	            String relationship = keyIndexes.get(i);
-	            TopLevelConcept.SUBHIERARCHY range = TopLevelConcept.SUBHIERARCHY_MAPPINGS.get(extendedPattern.get(relationship).get(pattern[i]));
+	            ConceptModelConcepts.SUBHIERARCHY range = ConceptModelConcepts.SUBHIERARCHY_MAPPINGS.get(extendedPattern.get(relationship).get(pattern[i]));
 	            PatternRightHand prh = new PatternRightHand(relationship,range);
 	            listPRH.add(prh);
 	        }

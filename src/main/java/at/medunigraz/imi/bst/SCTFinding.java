@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import at.medunigraz.imi.bst.TopLevelConcept.SUBHIERARCHY;
+import at.medunigraz.imi.bst.ConceptModelConcepts.SUBHIERARCHY;
 
 /**
  * This class parses the file which contains the list of annotation groups of the reference standard.
@@ -48,7 +48,7 @@ public class SCTFinding {
 		ArrayList<SUBHIERARCHY>	values = new ArrayList<SUBHIERARCHY>();
 		List<String> listParents = map.get(sctid);
 		for(String parent: listParents){
-			values.add(TopLevelConcept.SUBHIERARCHY_MAPPINGS.get(parent));
+			values.add(ConceptModelConcepts.SUBHIERARCHY_MAPPINGS.get(parent));
 		}
 		return values;
 	}
