@@ -3,15 +3,16 @@ package at.medunigraz.imi.bst;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class CombinationOfPatternInstances implements Comparable<CombinationOfPatternInstances>{
-	private ArrayList<PatternCombination> listPC;
+	private List<PatternCombination> listPC;
 	private HashMap<String,ArrayList<String[]>> tripletsMap;
 	private boolean isComplete;
 	private boolean isFullMatch;
 	private int frequency;
 	
-	public CombinationOfPatternInstances(ArrayList<PatternCombination> listPC){
+	public CombinationOfPatternInstances(List<PatternCombination> listPC){
 		this.listPC	= listPC;
 		isComplete	= true;
 		frequency	= 0;
@@ -80,7 +81,7 @@ public class CombinationOfPatternInstances implements Comparable<CombinationOfPa
 		return isFullMatch;
 	}
 	
-	public ArrayList<PatternCombination> getPatternCombinations(){
+	public List<PatternCombination> getPatternCombinations(){
 		return listPC;                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 	}
 	

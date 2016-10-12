@@ -12,7 +12,7 @@ import java.util.List;
  * @version 1.0
  * */
 public class Main_MatchingPostcoordinationPatterns {
-	public static final String MATCHING_PATTERNS_FILE	= "src/main/resources/data/matchingPatterns4.txt";
+	public static final String MATCHING_PATTERNS_FILE	= "src/main/resources/data/matchingPatterns5.txt";
 	public static final String SNOMEDCT_TERM_FILE		= "src/main/resources/data/sct2_Description_Snapshot-en_INT_20160131.txt";
 	
 	public static void main(String[] args) {
@@ -26,9 +26,10 @@ public class Main_MatchingPostcoordinationPatterns {
 			for(String groupId: mapStringCodes.keySet()){
 				AnnotationGroup ag = new AnnotationGroup(groupId, mapStringCodes.get(groupId));
 				List<PatternCombination> listMatchingPatterns = ag.getListPatternCombinations(allPatternFreq);
-				Collections.sort(listMatchingPatterns);
+				List<PatternCombination> listNonRedundant = ag.getListNonRedundantPatterns(listMatchingPatterns);
+				Collections.sort(listNonRedundant);
 				
-				CombinePatternInstances cpi = new CombinePatternInstances(listMatchingPatterns);
+				CombinePatternInstances cpi = new CombinePatternInstances(listNonRedundant);
 				
 				List<CombinationOfPatternInstances> groups = cpi.getCombinationsOfPatterns();
 				Collections.sort(groups);

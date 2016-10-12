@@ -48,6 +48,46 @@ public class AnnotationGroup {
 		return listSelectedPatterns;
 	}
 	
+	public List<PatternCombination> getListNonRedundantPatterns(List<PatternCombination> listPatterns){
+		ArrayList<PatternCombination> listNonRedundantPatterns = new ArrayList<PatternCombination>();
+		
+		for(PatternCombination pc0: listPatterns){
+			boolean toInsert = true;
+			for(PatternCombination pc1: listPatterns){
+				if(!pc0.equals(pc1)){
+					if(isInclude(pc0,pc1)){ // is pc0 C pc1
+						toInsert = false;
+						break;
+					}
+				}
+			}
+			if(toInsert) listNonRedundantPatterns.add(pc0);
+		}		
+		return listNonRedundantPatterns;
+	}
+	
+	private boolean isInclude(PatternCombination pc0, PatternCombination pc1){
+		String source1 = pc1.getMatchingTopLevel().getCode();
+		String source0 = pc0.getMatchingTopLevel().getCode();
+		if(source1.equals(source0)){
+			for(PatternRightHand prh0: pc0.getMatchingMap().keySet()){
+				String relationship0 = prh0.relationship;
+				String object0 = pc0.getMatchingMap().get(prh0).getCode();
+				boolean isIncluded = false;
+				for(PatternRightHand prh1: pc1.getMatchingMap().keySet()){
+					String relationship1 = prh1.relationship;
+					String object1 = pc1.getMatchingMap().get(prh1).getCode();
+					if(relationship1.equals(relationship0) && object1.equals(object0)){
+						isIncluded = true;
+						break;
+					}
+				}
+				if(!isIncluded) return false;
+			}
+			return true;
+		}
+		return false;
+	}
 	
 	private void recursiveCombination(List<PatternCombination> listSelectedPatterns, List<PatternFrequency> listPatterns, Integer[] indexes, int current){
 		if(current >= indexes.length){			
