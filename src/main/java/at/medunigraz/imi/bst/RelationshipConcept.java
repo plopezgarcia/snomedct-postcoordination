@@ -122,5 +122,13 @@ public class RelationshipConcept {
     	return ranges;
     }
     
+    public static String getCode(RELATIONSHIP rel){
+    	for(String code: RELATIONSHIP_MAPPINGS.keySet()){
+    		if(RELATIONSHIP_MAPPINGS.get(code).equals(rel)){
+    			return code;
+    		}
+    	}
+    	return "";
+    }
     
 }

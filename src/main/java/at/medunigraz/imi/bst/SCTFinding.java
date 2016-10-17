@@ -47,8 +47,10 @@ public class SCTFinding {
 	public List<SUBHIERARCHY> getAncestors(String sctid){
 		ArrayList<SUBHIERARCHY>	values = new ArrayList<SUBHIERARCHY>();
 		List<String> listParents = map.get(sctid);
-		for(String parent: listParents){
-			values.add(ConceptModelConcepts.SUBHIERARCHY_MAPPINGS.get(parent));
+		if(listParents!=null){
+			for(String parent: listParents){
+				values.add(ConceptModelConcepts.SUBHIERARCHY_MAPPINGS.get(parent));
+			}
 		}
 		return values;
 	}

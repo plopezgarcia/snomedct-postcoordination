@@ -18,8 +18,8 @@ import java.util.List;
 
 public class PatternFrequency implements Comparable<PatternFrequency>{
 
-    public static final String PATTERNS_FILE = "src/main/resources/data/pattern-extended-frequencies.csv";
-
+    //public static final String PATTERNS_FILE = "src/main/resources/data/pattern-extended-frequencies.csv";
+	public static final String PATTERNS_FILE = "src/main/resources/data/new-extended-pattern-frequencies.txt";
     public ConceptPattern pattern;
     public int frequency;
 

@@ -97,6 +97,49 @@ public class CombinePatternInstances {
 		boolean insert = true;
 		Map<String,ArrayList<String[]>> tripletsOut = copi.getTriplets();
 		for(int i=0;i<listCOPI.size();i++){
+			boolean hasNewTriplet = false;
+			Map<String,ArrayList<String[]>> tripletsIn = listCOPI.get(i).getTriplets();
+			for(String key: tripletsOut.keySet()){
+				if(!tripletsIn.containsKey(key)){
+					hasNewTriplet = true;
+					break;
+				}else{
+					boolean tripletExistsInSet = true;
+					for(String[] tripletOut: tripletsOut.get(key)){
+						boolean tripletExists = false;
+						for(String[] tripletIn: tripletsIn.get(key)){
+							if(tripletOut[0].equals(tripletIn[0]) && tripletOut[1].equals(tripletIn[1]) && tripletOut[2].equals(tripletIn[2])){
+								tripletExists = true;
+								break;
+							}
+						}
+						if(!tripletExists){
+							tripletExistsInSet = false;
+							break;
+						}
+					}
+					if(!tripletExistsInSet){
+						hasNewTriplet = true;
+						break;
+					}
+				}
+			}
+			if(!hasNewTriplet){
+				insert = false;
+				break;
+			}
+		}
+		if(insert){
+			listCOPI.add(copi);
+		}
+		return listCOPI;
+	}
+	
+	/*
+	private List<CombinationOfPatternInstances> insertInto(List<CombinationOfPatternInstances> listCOPI, CombinationOfPatternInstances copi){
+		boolean insert = true;
+		Map<String,ArrayList<String[]>> tripletsOut = copi.getTriplets();
+		for(int i=0;i<listCOPI.size();i++){
 			boolean containNewTriplet = false;
 			Map<String,ArrayList<String[]>> tripletsIn = listCOPI.get(i).getTriplets();
 			for(String key: tripletsOut.keySet()){
@@ -161,7 +204,7 @@ public class CombinePatternInstances {
 		
 		return listCOPI;
 	}
-	
+	*/
 	
 	private boolean isCompatible(List<PatternCombination> group, PatternCombination pattern){
 		if(group.isEmpty()) return true;
