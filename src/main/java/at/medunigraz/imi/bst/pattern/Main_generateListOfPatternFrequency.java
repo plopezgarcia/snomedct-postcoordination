@@ -49,25 +49,5 @@ public class Main_generateListOfPatternFrequency {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		/*List<PatternAdquisition> listPA = psctsr.getListPatterns();
-		try{
-			BufferedWriter bw = new BufferedWriter(new FileWriter(newPatternsFile));
-			for(PatternAdquisition pa: listPA){
-				bw.write(pa.getFrequency()+"\t[116680003-"+pa.getSourceCode());
-				HashMap<RELATIONSHIP,SUBHIERARCHY> prh = pa.getPatternRightHand();
-				if(!prh.isEmpty()){
-					for(RELATIONSHIP rel: prh.keySet()){
-						SUBHIERARCHY o_sub = prh.get(rel);
-						String code = RelationshipConcept.getCode(rel);
-						bw.write(", "+code+"-"+o_sub);
-					}
-				}
-				bw.write("]\n");
-			}
-			bw.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}*/
 	}
 }

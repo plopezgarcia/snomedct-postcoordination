@@ -17,7 +17,7 @@ public class PatternCombination implements Comparable<PatternCombination>{
 	private AnnotationCode matchingTopLevel;
 	private boolean isFullMatch; //Indicates whether the full set of codes from the annotation group is matched within the selected pattern.
 	
-	public int compareTo(PatternCombination pc) {
+	/*public int compareTo(PatternCombination pc) {
 		if(this.isComplete && this.isFullMatch && (!pc.isComplete() || !pc.isFullMatch()))	return -1;
 		if(!pc.isComplete() && !pc.isFullMatch() && (this.isComplete || this.isFullMatch))	return -1;
 		if(this.isFullMatch && !pc.isFullMatch() && !this.isComplete && pc.isComplete())	return -1; 
@@ -27,7 +27,11 @@ public class PatternCombination implements Comparable<PatternCombination>{
 			
 		if(this.getListCodes().size() != pc.getListCodes().size()) return pc.getListCodes().size() - this.getListCodes().size();
 		return pc.getPattern().frequency - this.getPattern().frequency;
-	}
+	}*/
+	
+	public int compareTo(PatternCombination pc) {
+		return pc.getPattern().frequency - this.getPattern().frequency;
+	}	
 	
 	public PatternFrequency getPattern(){
 		return pf;
@@ -84,7 +88,7 @@ public class PatternCombination implements Comparable<PatternCombination>{
 			return true;
 		
 		PatternCombination pc = (PatternCombination)o;
-		//if(pf.equals(pc.pf)){
+		if(pf.equals(pc.pf)){
 			if(matchingTopLevel.equals(pc.getMatchingTopLevel())){
 				if(matchingMap.size() == pc.matchingMap.size()){
 					for(PatternRightHand prh: matchingMap.keySet()){
@@ -95,7 +99,7 @@ public class PatternCombination implements Comparable<PatternCombination>{
 					return true;
 				}
 			}
-		//	}
+		}
     	
 		return false;
 	}
@@ -111,6 +115,23 @@ public class PatternCombination implements Comparable<PatternCombination>{
 		matching = matchingTopLevel.getCode()+"->["+matching+"]";
 		
 		String res = "Matching pattern:\n\t"+pf+"\n\tFull match:"+isFullMatch+"\tComplete pattern match:"+isComplete+"\n\t"+matching;
+		return res;
+	}
+	
+	public String toString(Code2FSN c2f){
+		String matching = "";
+		for(PatternRightHand prh: matchingMap.keySet()){
+			if(!matching.isEmpty()){
+				matching+="\t,";
+			}else{
+				matching+="\t";
+			}
+			AnnotationCode ac = matchingMap.get(prh);
+			matching+=prh.relationship+" | "+c2f.getName(prh.relationship)+" | = "+ac.getCode()+" | "+c2f.getName(ac.getCode())+" |\n";
+		}
+		matching = matchingTopLevel.getCode()+" | "+c2f.getName(matchingTopLevel.getCode())+" | :\n"+matching+"\n";
+		
+		String res = "Matching pattern:\n\tFull match:"+isFullMatch+"\tComplete pattern match:"+isComplete+"\tFrequency:"+pf.frequency+"\n"+matching;
 		return res;
 	}
 }

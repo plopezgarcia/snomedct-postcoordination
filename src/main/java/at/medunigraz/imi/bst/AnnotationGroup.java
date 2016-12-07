@@ -55,9 +55,27 @@ public class AnnotationGroup {
 			boolean toInsert = true;
 			for(PatternCombination pc1: listPatterns){
 				if(!pc0.equals(pc1)){
-					if(isInclude(pc0,pc1)){ // is pc0 C pc1
-						toInsert = false;
-						break;
+					if(areEqual(pc0,pc1)){
+						if(pc0.getPattern().frequency < pc1.getPattern().frequency){
+							toInsert = false;
+							break;
+						}
+						if(pc0.getPattern().frequency == pc1.getPattern().frequency){
+							if(!pc0.isComplete() && pc1.isComplete()){
+								toInsert = false;
+								break;
+							}else{
+								if(listPatterns.indexOf(pc0) > listPatterns.indexOf(pc1)){
+									toInsert = false;
+									break;
+								}
+							}
+						}
+					}else{
+						if(isIncluded(pc0,pc1)){ // is pc0 C pc1
+							toInsert = false;
+							break;
+						}
 					}
 				}
 			}
@@ -66,7 +84,33 @@ public class AnnotationGroup {
 		return listNonRedundantPatterns;
 	}
 	
-	private boolean isInclude(PatternCombination pc0, PatternCombination pc1){
+	private boolean areEqual(PatternCombination pc0, PatternCombination pc1){
+		String source1 = pc1.getMatchingTopLevel().getCode();
+		String source0 = pc0.getMatchingTopLevel().getCode();
+		if(source1.equals(source0)){
+			if(pc0.getMatchingMap().size() == pc1.getMatchingMap().size()){
+				for(PatternRightHand prh0: pc0.getMatchingMap().keySet()){
+					String relationship0 = prh0.relationship;
+					String object0 = pc0.getMatchingMap().get(prh0).getCode();
+					boolean isIncluded = false;
+					for(PatternRightHand prh1: pc1.getMatchingMap().keySet()){
+						String relationship1 = prh1.relationship;
+						String object1 = pc1.getMatchingMap().get(prh1).getCode();
+						if(relationship1.equals(relationship0) && object1.equals(object0)){
+							isIncluded = true;
+							break;
+						}
+					}
+					if(!isIncluded) return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	private boolean isIncluded(PatternCombination pc0, PatternCombination pc1){
 		String source1 = pc1.getMatchingTopLevel().getCode();
 		String source0 = pc0.getMatchingTopLevel().getCode();
 		if(source1.equals(source0)){
@@ -92,6 +136,10 @@ public class AnnotationGroup {
 	private void recursiveCombination(List<PatternCombination> listSelectedPatterns, List<PatternFrequency> listPatterns, Integer[] indexes, int current){
 		if(current >= indexes.length){			
 			List<AnnotationCode> listCodes = getCombinationCodes(indexes);
+			/*for(AnnotationCode ac: listCodes){
+				System.out.print(ac+", ");
+			}
+			System.out.println();*/
 			List<PatternCombination> listMatchedPatterns = findMatchingPatterns(listPatterns, listCodes);
 			for(PatternCombination pc: listMatchedPatterns){
 				if(!listSelectedPatterns.contains(pc)) listSelectedPatterns.add(pc);
@@ -121,7 +169,10 @@ public class AnnotationGroup {
 			if(pf.pattern.patternRightHands.size()+1 < listCodes.size()) continue;
 			List<PatternCombination> listBestMatching = getBestMatching(pf, listCodes);
 			for(PatternCombination pc: listBestMatching){
-				if(!listMatchingPatterns.contains(pc))	listMatchingPatterns.add(pc);
+				if(!listMatchingPatterns.contains(pc)){
+					//System.out.println(pc);
+					listMatchingPatterns.add(pc);
+				}
 			}
 		}
 		

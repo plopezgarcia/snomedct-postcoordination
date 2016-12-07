@@ -11,8 +11,8 @@ public class CombinePatternInstances {
 		listCombinePatterns = listPatterns;
 	}
 	
-	public ArrayList<CombinationOfPatternInstances> getCombinationsOfPatterns(){
-		ArrayList<CombinationOfPatternInstances> resultList = new ArrayList<CombinationOfPatternInstances>();
+	public List<CombinationOfPatternInstances> getCombinationsOfPatterns(){
+		List<CombinationOfPatternInstances> resultList = new ArrayList<CombinationOfPatternInstances>();
 		/*ArrayList<Integer> indexPatterns = new ArrayList<Integer>();
 		for(int i=0;i<listCombinePatterns.size();i++){
 			indexPatterns.add(i);
@@ -46,29 +46,26 @@ public class CombinePatternInstances {
 		}*/
 		
 		if(listCombinePatterns.size() > 0){
+			for(PatternCombination pc: listCombinePatterns){
+				List<PatternCombination> listPC = new ArrayList<PatternCombination>();
+				listPC.add(pc);
+				CombinationOfPatternInstances copi = new CombinationOfPatternInstances(listPC);
+				resultList = insertInto(resultList,copi);
+			}
+			
 			ArrayList<PatternCombination> perm = new ArrayList<PatternCombination>();
 			int nMax = 5;
 			if(listCombinePatterns.size()<nMax) nMax = listCombinePatterns.size();
 			perm2(resultList, listCombinePatterns, perm, nMax);
+			
 		}
+		
 		return resultList;
 	}
 	
 	
 	private void perm2(List<CombinationOfPatternInstances> resultList, List<PatternCombination> source, List<PatternCombination> perm, int n){
 		if(n==0){
-			/*ArrayList<PatternCombination> group = new ArrayList<PatternCombination>();
-			for(PatternCombination pc: perm){
-				if(isCompatible(group, pc)){
-					group.add(pc);
-				}
-			}
-			
-			for(PatternCombination pc: perm){
-				System.out.print(listCombinePatterns.indexOf(pc)+" ");
-			}
-			System.out.println();*/
-			
 			CombinationOfPatternInstances copi = new CombinationOfPatternInstances(perm);
 			resultList = insertInto(resultList,copi);
 		}else{

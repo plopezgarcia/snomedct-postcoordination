@@ -62,17 +62,45 @@ public class CombinationOfPatternInstances implements Comparable<CombinationOfPa
 	}
 	
 	public int compareTo(CombinationOfPatternInstances copi) {
-		if(this.isComplete && this.isFullMatch && (!copi.isComplete() || !copi.isFullMatch()))	return -1;
+		/*if(this.isComplete && this.isFullMatch && (!copi.isComplete() || !copi.isFullMatch()))	return -1;
 		if(!copi.isComplete() && !copi.isFullMatch() && (this.isComplete || this.isFullMatch))	return -1;
 		if(this.isFullMatch && !copi.isFullMatch() && !this.isComplete && copi.isComplete())	return -1; 
 		if(copi.isComplete() && copi.isFullMatch() && (!this.isComplete || !this.isFullMatch))	return 1;
 		if(!this.isComplete && !this.isFullMatch && (copi.isComplete() || copi.isFullMatch()))	return 1;
-		if(copi.isFullMatch() && !this.isFullMatch && !copi.isComplete() && this.isComplete)	return 1;
+		if(copi.isFullMatch() && !this.isFullMatch && !copi.isComplete() && this.isComplete)	return 1;*/
 		
 		//if(this.getListCodes().size() != pc.getListCodes().size()) return pc.getListCodes().size() - this.getListCodes().size();
 		return copi.frequency - this.frequency;
 	}
 
+	public boolean equals(CombinationOfPatternInstances copi){
+		if(this.isComplete != copi.isComplete())	return false;
+		if(copi.isFullMatch() != this.isFullMatch)	return false;
+		if(copi.frequency != this.frequency) return false;
+		if(copi.getTriplets().size() != tripletsMap.size()) return false;
+		
+		for(String key: copi.getTriplets().keySet()){
+			boolean exists = false;
+			for(String top: tripletsMap.keySet()){
+				if(key.equals(top)){
+					exists = true;
+					for(String[] valuesK: copi.getTriplets().get(key)){
+						boolean rhExists = false;
+						for(String[] valuesT: tripletsMap.get(top)){
+							if(valuesK[0].equals(valuesT[0]) && valuesK[1].equals(valuesT[1])){
+								rhExists = true;
+								break;
+							}
+						}
+						if(!rhExists) return false;
+					}
+				}
+			}
+			if(!exists) return false;
+		}
+		return true;
+	}
+	
 	public boolean isComplete(){
 		return isComplete;
 	}
